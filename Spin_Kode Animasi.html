@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUCKY SPIN</title>
+    <style>
+        body {
+            background: #001f3f;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    .wheel-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+    }
+    .wheel {
+      width: 100%;
+      height: 100%;
+      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+      transform: rotate(0deg);
+    }
+    .pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 30px solid orange;
+      transform: translateX(-50%);
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 200px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    </style>
+</head>
+<body>
+    <h1>SPIN & WIN 🎁</h1>
+
+    <div class="wheel-container">
+    <div class="pointer"></div>
+    <img src="gambar_spinterbaru.png" class="wheel" id="wheel">
+  </div>
+  <div>
+    <input type="text" id="kodeInput" placeholder="Masukkan kode">
+    <button onclick="putarRoda()">Klaim Hadiah</button>
+  </div>
+
+  <div id="result"></div>
+  
+  <script>
+    // Hadiah berdasarkan kode dan posisi sektor (0 = atas)
+    const hadiahMap = {
+      "SPIN001": { hadiah: "iPhone 16", sektor: 0 },
+      "SPIN002": { hadiah: "Credit 10 Juta", sektor: 1 },
+      "SPIN003": { hadiah: "Saldo 20 Juta", sektor: 2 },
+      "SPIN004": { hadiah: "Samsung Z Fold 7", sektor: 3 },
+      "SPIN005": { hadiah: "Samsung S25 Ultra", sektor: 4 },
+      "SPIN006": { hadiah: "iPad M4 13 inch", sektor: 5 },
+      "SPIN007": { hadiah: "iPad 11 inch", sektor: 6 },
+    };
+
+    const sektorSudut = 360 / 8;
+    let totalPutaran = 6; // jumlah putaran penuh sebelum berhenti
+
+    function putarRoda() {
+      const input = document.getElementById("kodeInput").value.trim().toUpperCase();
+      const wheel = document.getElementById("wheel");
+      const result = document.getElementById("result");
+
+      if (!hadiahMap[input]) {
+        result.innerText = "❌ Kode tidak valid.";
+        result.style.color = "red";
+        return;
+      }
+      const sektor = hadiahMap[input].sektor;
+      const hadiah = hadiahMap[input].hadiah;
+
+      const akhirSudut = 360 - (sektor * sektorSudut) + (sektorSudut / 2);
+      const totalSudut = (360 * totalPutaran) + akhirSudut;
+
+      wheel.style.transform = `rotate(${totalSudut}deg)`;
+
+      setTimeout (() => {
+        result.innerText = `🎉 Kamu mendapatkan: ${hadiah}`;
+        result.style.color = "#00ff99";
+      }, 4500);
+    }
+
+  </script>
+</body>
+</html>
